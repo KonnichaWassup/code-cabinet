@@ -1,0 +1,327 @@
+import random #import random funtion
+
+global player #global variable declaration
+global fate #global variable declaration
+global red_win #global variable declaration
+global blue_win #global variable declaration
+
+player = "red" or "blue" #player trigger
+red_init = 0 #red d20
+blue_init = 0 #blue d20
+red_win = 0 #red win trigger
+blue_win = 0 #blue win trigger
+turn_count = 0 #turn counter, tracking
+phase = 1 #starting phase 
+phase_limit = 5 #phase limit, default = 5
+fate = 0 #fate counter, tracking
+token_list = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26","t27","t28","t29"] #main token list, 29 tokens
+tc = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14"] #commoner token list, 14 tokens
+ts = ["t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26"] #samurai token list, 12 tokens
+tf = ["t27","t28","t29"]
+tc_bin = [] #commoner tokens to be returned to the bag at the end of the turn
+ts_bin = [] #samurai tokens to be returned to the bag at the end of the turn
+tf_bin = [] #fate tokens to be returned to the bag at the end of the turn
+tc_dead = [] #commoner tokens that cannot be returned
+ts_dead = [] #samurai tokens that cannot be returned
+token_bag = (len(token_list)) #number of available tokens
+card_pile = ["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13","c14","c15","c16","c17","c18","c19","c20","c21"] #card pile
+r_pile = [] #red's card pile
+b_pile = [] #blue's card pile
+
+#functions
+
+def init_roll(): #roll init function
+  global player
+
+  red_init = random.randint(1,20) #red d20 roll for initiative
+  blue_init = random.randint(1,20) #blue d20 roll for initiative
+  print ("Red is "+str(red_init))
+  print ("Blue is "+str(blue_init))
+  
+  if red_init > blue_init: #if red d20 > blue d20
+    print ("Red takes the first turn!")
+    print ()
+    player = "red"
+  
+  if blue_init > red_init: #if blue d20 >red d20
+    print ("Blue takes the first turn!")
+    print ()
+    player = "blue"
+  
+  if red_init == blue_init: #if red and blue are tie
+    print ("Tie! Roll again!")
+    init_roll()
+    
+  return
+
+def current_turn(): #player turn function
+  global player
+
+  if player == "red":
+    print ("Red's turn")
+  
+  if player == "blue":
+    print ("Blue's turn") 
+  return
+
+def turn(): #turn phase function
+  global player
+  global red_win
+  global blue_win
+
+  print ("ACTION PHASE!") #battle phase (movement, attacks, etc.)
+
+  msg1 = input("Done?")
+ 
+  if msg1 == ("y"):
+    print ("RESOLUTION PHASE!") #token removal phase
+    man_draw()
+ 
+    msg1 = input("Done?")
+ 
+    if msg1 == ("y"):
+      msg2 = input("Win?")
+    
+      if msg2 == ("y") and player == ("red"):
+        red_win = 1
+        print ("Red wins!")
+    
+      if msg2 == ("y") and player == ("blue"):
+        blue_win = 1
+        print ("Blue wins!")
+    
+      if msg2 == ("n") and player == ("red"):
+        print ("End of Red's turn!")
+        print ()
+    
+      if msg2 == ("n") and player == ("blue"):
+        print ("End of Blue's turn!")
+        print ()
+  
+  return
+
+def draw_token(): #token draw function
+  
+  global fate
+  
+  draw = input("Draw token?") #user input to draw token
+
+  if draw == "y": #player draw
+    token_draw = random.choice(token_list) #randomly draw a token from the main list
+    token_bag = (len(token_list)-1) #subtract a token from token bag
+    
+    #if the player draws a commoner token
+    if token_draw in ("t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14"): #t1-t3 are commoner tokens
+      print ("You drew a commoner token!")
+      tc.remove(token_draw) #remove the commoner token from the commoner list
+      tc_bin.append(token_draw) #move token to bin, to return back to the bag after the current phase
+
+    #if the player draws a samurai token
+    if token_draw in ("t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26"): #t4-t5 are samurai tokens
+      print ("You drew a samurai token!")
+      ts.remove(token_draw) #remove the samurai token from the samurai list
+      ts_bin.append(token_draw) #move token to bin, to return back to the bag after the current phase
+
+    #if the player draws a fate token
+    if token_draw in ("t27","t28","t29") and fate < 3: #t6-t8 are fate tokens
+      fate = fate + 1 #add +1 to fate count, fate = 3 ends the turn
+      tf.remove(token_draw)
+      if fate < 3:
+        print ("You drew a fate token! Draw a card!")
+        draw_card()
+      tf_bin.append(token_draw) #move token to bin, to return back to the bag after the current phase
+      
+
+    token_list.remove(token_draw) #removes the random token in the main list
+    print ("Tokens left in the bag = "+str(token_bag)) #print the remaining token numbers
+  return
+
+def man_draw(): #token removal function
+  global token_bag
+  
+  rem_prompt = input("Remove tokens?")
+
+  if rem_prompt == "y":
+    print ("Samurai tokens = "+str(len(ts)))
+    print ("Commoner tokens = "+str(len(tc)))
+   
+    rem_type = input("Samurai or Commoner tokens?")
+   
+    if rem_type == "s" and len(ts) == 0:
+      print ("There are no more samurai tokens available!")
+      man_draw()
+   
+    if rem_type == "c" and len(tc) == 0:
+      print ("There are no more commoner tokens available!")
+      man_draw()
+   
+    rem_num = int(input("How many tokens?"))
+   
+    if rem_type == "s" and ts != 0: #remove samurai token code
+   
+      if rem_num > len(ts):
+        print ("Pick between 0 and "+str(len(ts)))
+        man_draw()
+   
+      if  rem_num <= len(ts) > 0:
+        while rem_num != 0:
+          token_draw = random.choice(ts)
+          token_list.remove(token_draw)
+          ts_bin.append(token_draw)
+          ts_dead.append(token_draw)
+          ts.remove(token_draw)
+          rem_num = rem_num - 1
+          token_bag = (len(token_list))
+      print ("Tokens left in the bag = "+str(token_bag))
+    
+    if rem_type == "c": #remove commoner token code
+
+      if rem_num > len(tc): #handle value greater than token available
+        print ("Pick between 0 and "+str(len(tc)))
+        man_draw()
+
+      if  rem_num <= len(tc) > 0: #draw code
+        while rem_num != 0:
+          token_draw = random.choice(tc)
+          token_list.remove(token_draw)
+          tc_bin.append(token_draw) 
+          tc_dead.append(token_draw)
+          tc.remove(token_draw)
+          rem_num = rem_num - 1
+          token_bag = (len(token_list))
+      print ("Tokens left in the bag = "+str(token_bag))
+    
+    if (rem_type == "c" or "s") and rem_num == 0:
+      pass
+  
+
+  if rem_prompt == "n":
+    token_bag = (len(token_list))
+    print ("Tokens left = "+str(token_bag))
+    pass
+  
+  return
+
+#draw card function 
+def draw_card():
+  global player
+
+  if len(card_pile) > 0: #check for available cards
+    print ("Cards left: "+str(len(card_pile)))
+
+  if len(card_pile) == 0: #check for available cards
+    print ("There are no more cards!")
+
+  if player == "red": #player check
+    print ("Red draws:")
+    p_draw = random.choice(card_pile) #pick card
+    r_pile.append(p_draw) #add card to red's pile
+    card_pile.remove(p_draw) #remove card from the card pile
+
+  if player == "blue": #player check
+    print ("Blue draws:") 
+    p_draw = random.choice(card_pile) #pick card
+    b_pile.append(p_draw) #add card to blue's pile
+    card_pile.remove(p_draw) #remove card from the card pile
+  
+
+  #card values
+  if p_draw == "c1": 
+    print ("[Exceptional Armour]\nIf an enemy’s Damage roll against the Samurai does not include any swords, the result is counted as a glancing blow and does not cause a blood drop.")
+  if p_draw == "c2":
+    print ("[Debt Owed]\nWhen you gain this card, choose and take any Skill card with the Coin Keyword from your opponent’s Samurai and give it to one of yours. If no Coin card is available, you gain nothing. Then discard this card.")
+  if p_draw == "c3":
+    print ("[Fencing]\nDeclare you are using this skill before making a melee Strike roll. Gain +1 die to the Strike roll and lose 1 die from the damage roll. (Once Per Turn)")
+  if p_draw == "c4": 
+    print ("[Tough Hide]\nOnce, when the Samurai suffers a heavy wound, roll a die, the following results apply:\nDouble blade: light wound (1 blood drop)\nBlade: light wound (2 blood drops)\nBlank: heavy wound (cut down)\nX: heavy wound, (cut down)")
+  if p_draw == "c5":
+    print ("[Knock Down]\nOnce per turn, after the Samurai makes a melee Damage roll, if his opponent has not been down, he may take a Test of Strength.  If the test is passed, the opponent is knocked down.")
+  if p_draw == "c6":
+    print ("[Barge Past]\nWhen pushing past a friendly warrior during a charge action, the Samurai makes a Test of Strength. If passed, the warrior does lose a die from his Strike roll.")
+  if p_draw == "c7":
+    print ("[Evasion]\nOnce per turn, +1 die on Avoid Roll.")
+  if p_draw == "c8":
+    print ("[Inspiring Speech]\nOnce per battle, all friendly warriors within 6 inches move 3 inches towards the nearest enemy.  If this would take them within 1 inch of an enemy, they stop 1 inch away.")
+  if p_draw == "c9":
+    print ("[Map]\n+1 die on the Test of Wits for a Search action.")
+  if p_draw == "c10":
+    print ("[Military Scholar]\nThe Samurai and friendly warriors within 6 inches gain +1 die on the Test of Wits to target a further enemy.")
+  if p_draw == "c11":
+    print ("[Perfect Aim]\nOnce per turn, when making a shooting action, the Samurai may ignore one thing impeding the shot.")
+  if p_draw == "c12":
+    print ("[Defensive Form]\nOnce per turn, the Samurai’s avoid bonus is triggered by rolling 4+ swords rather than 5+. You must declare you are using this ability before making the Avoid roll.")
+  if p_draw == "c13":
+    print ("[Commanding Presence]\nIf the Samurai is within 6 inches, commoners gain +1 die when test to keep their nerve.  They must be able to see the Samurai to gain this benefit.")
+  if p_draw == "c14":
+    print ("[Special Instructions]\nOnce per Battle, one other warrior in your force can make a Move or Cautious Move as a free action.")
+  if p_draw == "c15":
+    print ("[Defensive Drills]\nIf the Samurai is within 6 inches when a friendly Spearman group is making an Avoid roll, their weapon bonus is triggered on 4+ swords rather than 5+.")
+  if p_draw == "c16":
+    print ("[Proud Troops]\nOnce per turn, if you have no Dishonour cards and your opponent has three or more, you gain +1 die on the next test made by a commoner.")
+  if p_draw == "c17":
+    print ("[Issue Challenge]\nOnce per battle, from now on, the Samurai and the enemy Samurai hero gain +1 die to their melee Strike roll when fighting each other.  They both suffer a -1 die on Strike rolls against anyone else.  This effect ends if either warrior is cut down.")
+  if p_draw == "c18":
+    print ("[Master-Forged Weapon]\nOnce per turn,+1 die on Damage roll.")
+  if p_draw == "c19":
+    print ("[Deflect Arrow]\nOnce per turn, as long as the warrior has actions remaining to use this turn, he can attempt to avoid a shot from an arrow or thrown weapon without using an action.")
+  if p_draw == "c20":
+    print ("[One with Nature]\nThe Samurai can move through rough terrain without any penalty to his movement (Does not apply to mounted warriors).")
+  if p_draw == "c21":
+    print ("[Vault]\nWhen pushing past a friendly warrior during a charge action, the Samurai makes a Test of Agility.  If passed, the warrior does lose a die from his Strike roll.")
+
+  print ("Cards left: "+str(len(card_pile))) #print available cards left
+
+  return
+
+#main code
+init_roll() #roll for initiative
+
+while phase != 5: #loop until the phase limit
+  current_turn()
+  draw_token()
+
+  if fate == 3: #fate token monitor
+    phase = phase + 1
+    phase_limit = phase_limit - 1
+    print ("Three fate tokens has been drawn! Next phase!")
+    
+    if player == ("red"): #player tracking
+      player = ("red")
+    else:
+      player = ("blue")
+    token_list = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26","t27","t28","t29"] #main token list, 29 tokens, regenerate prior to compare
+    tc = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14"] #commoner token list, 14 tokens, regenerate prior to compare
+    ts = ["t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26"]
+    tf = ["t27","t28","t29"] #fate token list, regenerate to return
+    fate = 0 #reset fate counter every phase
+
+    for x in ts_dead: #compare dead samurai tokens from the main list and then remove
+      ts.remove(x)
+      token_list.remove(x)
+    for x in tc_dead: #compare dead commoner tokens from the main list and then remove 
+      tc.remove(x)
+      token_list.remove(x)
+
+    token_bag = (len(token_list)) #refresh list
+    print ("Number of returned tokens in the bag: "+str(token_bag))
+
+    current_turn()
+    draw_token()
+  
+  turn()
+
+  if red_win == 1: #red win monitor
+    break #end game
+  if blue_win == 1: #blue win monitor
+    break #end game
+
+  if player == ("red"):
+    player = ("blue")
+
+  else:
+    player = ("red")
+
+  if phase == 5:
+    print ("Match over!")
+    break #end game
+  
