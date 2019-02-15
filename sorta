@@ -1,0 +1,632 @@
+
+@echo off
+
+echo.
+echo *SortaTool v10*
+echo.
+
+timeout 1 /nobreak > nul
+
+echo.
+echo -------Start!------
+echo.
+
+timeout 1 /nobreak > nul
+
+set curdir=%~dp0
+
+echo You are here:
+echo %~dp0
+
+REM -------------------------------SEC1 RENAME AND UNBLOCK-------------------------------
+
+echo.
+echo Please enter month and year initials (ex.Mar2018) for filename extension (ex.KB1234567_Mar2018.msu)
+echo.
+set /p addext=Enter date initials:
+echo.
+
+echo Unblocking and renaming files...
+
+for %%a in (*.msu) do (echo.>%%a:Zone.Identifier)
+for %%a in (*.exe) do (echo.>%%a:Zone.Identifier)
+
+for /f "Tokens=*" %%f in ('dir /l/b/a-d') do (rename "%%f" "%%f")
+
+for %%a in (*.msu) do ren "%%~a" "%%~na_"%addext%"%%~xa"
+for %%a in (*.exe) do ren "%%~a" "%%~na_"%addext%"%%~xa"
+
+timeout 5 /nobreak > nul
+
+echo Done!
+
+timeout 2 /nobreak > nul
+
+cls
+
+REM -------------------------------SEC2 FOLDER GENERATION-------------------------------
+ 
+echo.
+echo And the Divine Programmer said, Let there be folders...
+echo.
+
+mkdir "%~dp0/Windows 7 32-Bit SP1"
+mkdir "%~dp0/Windows 7 64-Bit SP1"
+mkdir "%~dp0/Windows Server 2008 SP2"
+mkdir "%~dp0/Windows Server 2008 R2 SP1"
+mkdir "%~dp0/Windows 10"
+mkdir "%~dp0/Windows Server 2016"
+
+timeout 3 /nobreak > nul
+
+echo And there were folders...
+
+timeout 5 /nobreak > nul
+
+cls
+
+echo.
+echo Starting to copy files, please wait...
+echo.
+
+timeout 2 /nobreak > nul
+
+cls
+
+REM -------------------------------SEC3 FILE COPY-------------------------------
+
+echo.
+echo Copying files for Windows 7 32-Bit SP1, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows6.1" ^|find "x86"') do xcopy /Y "%%F" "%~dp0/Windows 7 32-Bit SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "ndp" ^|find "x86"') do xcopy /Y "%%F" "%~dp0/Windows 7 32-Bit SP1"
+
+echo.
+echo ------Done!------
+echo.
+
+echo.
+echo Copying files for Windows 7 64-Bit SP1, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows6.1" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows 7 64-Bit SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "ndp" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows 7 64-Bit SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2013" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows 7 64-Bit SP1"
+
+
+
+echo.
+echo ------Done!------
+echo.
+
+echo.
+echo Copying files for Windows Server 2008 SP2, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows6.0" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows Server 2008 SP2"
+
+echo.
+echo ------Done!------
+echo.
+
+echo.
+echo Copying files for Windows Server 2008 R2 SP1, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows6.1" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows Server 2008 R2 SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "ndp" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows Server 2008 R2 SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2013" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows Server 2008 R2 SP1"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2016" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows Server 2008 R2 SP1"
+
+echo.
+echo ------Done!------
+echo.
+
+echo.
+echo Copying files for Windows 10, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows10" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows 10"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2013" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows 10"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2016" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows 10"
+
+echo.
+echo ------Done!------
+echo.
+
+echo.
+echo Copying files for Windows Server 2016, please wait...
+echo.
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "windows10" ^|find "x64"') do xcopy /Y "%%F" "%~dp0\Windows Server 2016"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2013" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows Server 2016"
+
+for /f "eol=: delims=" %%F in ('dir /b ^|find "2016" ^|find "x86"') do xcopy /Y "%%F" "%~dp0\Windows Server 2016"
+
+echo.
+echo ------Done!------
+echo.
+
+timeout 2 /nobreak > nul
+
+cls
+
+REM -------------------------------SEC4 INSTALLER FILE GENERATION-------------------------------
+
+echo.
+echo Generating installer text files, please wait...
+echo.
+
+timeout 2 /nobreak > nul
+
+dir "%~dp0Windows 7 32-Bit SP1" / -p  /b /o:gn > "%~dp0Windows 7 32-Bit SP1\temp11.3.1.txt"
+type "%~dp0Windows 7 32-Bit SP1\temp11.3.1.txt" | findstr /v "11.3.1.txt" > "%~dp0Windows 7 32-Bit SP1\11.3.1 Installers.txt"
+del "%~dp0Windows 7 32-Bit SP1\temp11.3.1.txt" /q
+
+dir "%~dp0Windows 7 32-Bit SP1" / -p  /b /o:gn > "%~dp0Windows 7 32-Bit SP1\temp12.3.1.txt"
+type "%~dp0Windows 7 32-Bit SP1\temp12.3.1.txt" | findstr /v "11.3.1 Installers.txt" | findstr /v "12.3.1.txt"> "%~dp0Windows 7 32-Bit SP1\12.3.1 Installers.txt"
+del "%~dp0Windows 7 32-Bit SP1\temp12.3.1.txt" /q
+
+dir "%~dp0Windows 7 64-Bit SP1" / -p  /b /o:gn > "%~dp0Windows 7 64-Bit SP1\temp12.3.1.txt"
+type "%~dp0Windows 7 64-Bit SP1\temp12.3.1.txt" | findstr /v "12.3.1.txt" > "%~dp0Windows 7 64-Bit SP1\12.3.1 Installers.txt"
+del "%~dp0Windows 7 64-Bit SP1\temp12.3.1.txt" /q
+
+dir "%~dp0Windows 7 64-Bit SP1" / -p  /b /o:gn > "%~dp0Windows 7 64-Bit SP1\temp13.3.1.txt"
+type "%~dp0Windows 7 64-Bit SP1\temp13.3.1.txt" | findstr /v "12.3.1 Installers.txt" | findstr /v "13.3.1.txt"> "%~dp0Windows 7 64-Bit SP1\13.3.1 Installers.txt"
+del "%~dp0Windows 7 64-Bit SP1\temp13.3.1.txt" /q
+
+dir "%~dp0Windows 10" / -p  /b /o:gn > "%~dp0Windows 10\temp13.3.1.txt"
+type "%~dp0Windows 10\temp13.3.1.txt" | findstr /v "13.3.1.txt" > "%~dp0Windows 10\13.3.1 Installers.txt"
+del "%~dp0Windows 10\temp13.3.1.txt" /q
+
+dir "%~dp0Windows 10" / -p  /b /o:gn > "%~dp0Windows 10\temp14.3.txt"
+type "%~dp0Windows 10\temp14.3.txt" | findstr /v "13.3.1 Installers.txt" | findstr /v "14.3.txt"> "%~dp0Windows 10\14.3 Installers.txt"
+del "%~dp0Windows 10\temp14.3.txt" /q
+
+dir "%~dp0Windows Server 2016" / -p  /b /o:gn > "%~dp0Windows Server 2016\temp13.3.1.txt"
+type "%~dp0Windows Server 2016\temp13.3.1.txt" | findstr /v "13.3.1 Installers.txt" > "%~dp0Windows Server 2016\13.3.1 Installers.txt"
+del "%~dp0Windows Server 2016\temp13.3.1.txt" /q
+
+dir "%~dp0Windows Server 2016" / -p  /b /o:gn > "%~dp0Windows Server 2016\temp14.3.txt"
+type "%~dp0Windows Server 2016\temp14.3.txt" | findstr /v "13.3.1 Installers.txt" | findstr /v "14.3.txt"> "%~dp0Windows Server 2016\14.3 Installers.txt"
+del "%~dp0Windows Server 2016\temp14.3.txt" /q
+
+dir "%~dp0Windows Server 2008 R2 SP1" / -p  /b /o:gn > "%~dp0Windows Server 2008 R2 SP1\temp12.3.1.txt"
+type "%~dp0Windows Server 2008 R2 SP1\temp12.3.1.txt" | findstr /v "12.3.1.txt" > "%~dp0Windows Server 2008 R2 SP1\12.3.1 Installers.txt"
+del "%~dp0Windows Server 2008 R2 SP1\temp12.3.1.txt" /q
+
+dir "%~dp0Windows Server 2008 R2 SP1" / -p  /b /o:gn > "%~dp0Windows Server 2008 R2 SP1\temp13.3.1.txt"
+type "%~dp0Windows Server 2008 R2 SP1\temp13.3.1.txt" | findstr /v "12.3.1 Installers.txt" | findstr /v "13.3.1.txt"> "%~dp0Windows Server 2008 R2 SP1\13.3.1 Installers.txt"
+del "%~dp0Windows Server 2008 R2 SP1\temp13.3.1.txt" /q
+
+dir "%~dp0Windows Server 2008 SP2" / -p  /b /o:gn > "%~dp0Windows Server 2008 SP2\temp11.3.1.txt"
+type "%~dp0Windows Server 2008 SP2\temp11.3.1.txt" | findstr /v "11.3.1.txt" > "%~dp0Windows Server 2008 SP2\11.3.1 Installers.txt"
+del "%~dp0Windows Server 2008 SP2\temp11.3.1.txt" /q
+
+dir "%~dp0Windows Server 2008 SP2" / -p  /b /o:gn > "%~dp0Windows Server 2008 SP2\temp12.3.1.txt"
+type "%~dp0Windows Server 2008 SP2\temp12.3.1.txt" | findstr /v "11.3.1 Installers.txt" | findstr /v "12.3.1.txt"> "%~dp0Windows Server 2008 SP2\12.3.1 Installers.txt"
+del "%~dp0Windows Server 2008 SP2\temp12.3.1.txt" /q
+
+echo.
+echo ------Done!------
+echo.
+
+
+timeout 2 /nobreak > nul
+
+cls
+
+REM -------------------------------SEC5 BATCH FILE GENERATION-------------------------------
+
+REM ------------------------Windows 7 32-bit SP1 ------------------------
+
+echo Creating batch file for Windows 7 32-bit SP1 for DeltaV v11.3.1 ...
+
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo @echo off
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 7 32-bit SP1\11.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 32-bit SP1\11.3.1.bat" echo exit
+
+echo Done.
+
+
+echo Creating batch file for Windows 7 32-bit SP1 for DeltaV v12.3.1 ...
+
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo @echo off
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 7 32-bit SP1\12.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 32-bit SP1\12.3.1.bat" echo exit
+
+echo Done.
+
+
+REM  ------------------------Windows 7 64-bit SP1 ------------------------
+
+echo Creating batch file for Windows 7 64-bit SP1 for DeltaV v12.3.1 ...
+
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo @echo off
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 7 64-bit SP1\12.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 64-bit SP1\12.3.1.bat" echo exit
+
+echo Done.
+
+
+echo Creating batch file for Windows 7 64-bit SP1 for DeltaV v13.3.1 ...
+
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo @echo off
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 7 64-bit SP1\13.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows 7 64-bit SP1\13.3.1.bat" echo exit
+
+echo Done.
+
+REM ------------------------Windows 10------------------------
+
+echo Creating batch file for Windows 10 for DeltaV v13.3.1 ...
+
+>> "%~dp0Windows 10\13.3.1.bat" echo @echo off
+>> "%~dp0Windows 10\13.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 10\13.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 10\13.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 10\13.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows 10\13.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 10\13.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 10\13.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 10\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows 10\13.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 10\13.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 10\13.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 10\13.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 10\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows 10\13.3.1.bat" echo exit
+
+echo Done.
+
+echo Creating batch file for Windows 10 for DeltaV v14.3 ...
+
+>> "%~dp0Windows 10\14.3.bat" echo @echo off
+>> "%~dp0Windows 10\14.3.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows 10\14.3.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows 10\14.3.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows 10\14.3.bat" echo sc start wuauserv
+>> "%~dp0Windows 10\14.3.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows 10\14.3 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows 10\14.3.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows 10\14.3.bat" echo :-----------------
+>> "%~dp0Windows 10\14.3.bat" echo sc stop wuauserv 
+>> "%~dp0Windows 10\14.3.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows 10\14.3.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows 10\14.3.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows 10\14.3.bat" echo :-----------------
+>> "%~dp0Windows 10\14.3.bat" echo exit
+
+echo Done.
+
+REM ------------------------Windows Server 2008 SP2------------------------
+
+echo Creating batch file for Windows Server 2008 SP2 for DeltaV v11.3.1 ...
+
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo @echo off
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2008 SP2\11.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2008 SP2\11.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 SP2\11.3.1.bat" echo exit
+
+echo Done.
+
+echo Creating batch file for Windows Server 2008 SP2 for DeltaV v12.3.1 ...
+
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo @echo off
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2008 SP2\12.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2008 SP2\12.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 SP2\12.3.1.bat" echo exit
+
+echo Done.
+
+
+
+REM  ------------------------Windows Server 2008 R2 SP1------------------------
+
+echo Creating batch file for Windows Server 2008 R2 SP1 for DeltaV v12.3.1 ...
+
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo @echo off
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2008 R2 SP1\12.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 R2 SP1\12.3.1.bat" echo exit
+
+echo Done.
+
+echo Creating batch file for Windows Server 2008 R2 SP1 for DeltaV v13.3.1 ...
+
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo @echo off
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2008 R2 SP1\13.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2008 R2 SP1\13.3.1.bat" echo exit
+
+echo Done.
+
+REM ------------------------Windows Server 2016------------------------
+
+echo Creating batch file for Windows Server 2016 for DeltaV v13.3.1 ...
+
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo @echo off
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2016\13.3.1 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2016\13.3.1.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2016\13.3.1.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2016\13.3.1.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo :-----------------
+>> "%~dp0Windows Server 2016\13.3.1.bat" echo exit
+
+echo Done.
+
+echo Creating batch file for Windows Server 2016 for DeltaV v14.3 ...
+
+>> "%~dp0Windows Server 2016\14.3.bat" echo @echo off
+>> "%~dp0Windows Server 2016\14.3.bat" echo echo Microsoft security updates being installed!!!
+>> "%~dp0Windows Server 2016\14.3.bat" echo echo Installation may take several minutes...
+>> "%~dp0Windows Server 2016\14.3.bat" echo sc config wuauserv start= demand
+>> "%~dp0Windows Server 2016\14.3.bat" echo sc start wuauserv
+>> "%~dp0Windows Server 2016\14.3.bat" echo :---- Patches ----
+
+
+setlocal enabledelayedexpansion
+
+for /f "usebackq delims=" %%A in ("%~dp0Windows Server 2016\14.3 Installers.txt") do (
+    set "switch="
+
+    if "%%~xA"==".exe" set "switch= /quiet /passive /norestart"
+    if "%%~xA"==".msu" set "switch= /quiet /norestart"
+
+    >>"%~dp0Windows Server 2016\14.3.bat" echo %%A!switch!
+)
+
+
+>> "%~dp0Windows Server 2016\14.3.bat" echo :-----------------
+>> "%~dp0Windows Server 2016\14.3.bat" echo sc stop wuauserv 
+>> "%~dp0Windows Server 2016\14.3.bat" echo sc config wuauserv start= disabled
+REM >> "%~dp0Windows Server 2016\14.3.bat" echo checkinstalled.exe
+REM >> "%~dp0Windows Server 2016\14.3.bat" echo wmic qfe get HotFixID,Description,InstalledOn /format:htable>[Auto]InstalledPatches.html
+>> "%~dp0Windows Server 2016\14.3.bat" echo :-----------------
+>> "%~dp0Windows Server 2016\14.3.bat" echo exit
+
+echo Done.
+
+pause
