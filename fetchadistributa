@@ -1,0 +1,179 @@
+@echo off
+
+echo.
+echo *FetchDist_Tool v1*
+
+echo.
+echo -------Start!------
+echo.
+
+echo Deleting existing shared connections, please wait...
+net use /delete \\vmtemsp-tm\c$
+net use /delete \\temsp143ap1\d$
+net use /delete \\temsp143ap2\d$
+net use /delete \\temsp143op1\d$
+net use /delete \\temsp143pr1\d$
+net use /delete \\temsp143ro1\d$
+net use /delete \\temsp143IDDC\d$
+
+echo.
+echo Bunch of errors? Just ignore 'em.
+echo.
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Mapping folders, please wait...
+net use Z: "\\vmtemsp-tm\c$\MSP Distribution" /user:Lifecycle\Administrator Emerson1 /persistent:Yes
+net use H: "\\temsp143ap1\d$"
+net use I: "\\temsp143ap2\d$"
+net use J: "\\temsp143op1\d$"
+net use K: "\\temsp143pr1\d$"
+net use L: "\\temsp143ro1\d$"
+net use M: "\\temsp143IDDC\d$"
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Cleaning up, please wait...
+rmdir /s /q "D:\PatchesUnderTest\Windows 10"
+rmdir /s /q "D:\PatchesUnderTest\Windows Server 2016"
+rmdir /s /q "D:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "D:\PatchesUnderTest\Common Installers"
+rmdir /s /q "D:\PatchesUnderTest\DV HF"
+
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Copying from repository, please wait...
+xcopy "Z:\Batch Files\Windows 10\*" "D:\PatchesUnderTest\Windows 10\*" /s /e /q
+xcopy "Z:\Batch Files\Windows Server 2016\*" "D:\PatchesUnderTest\Windows Server 2016\*" /s /e /q
+xcopy "Z:\64-bit Installers\*" "D:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "Z:\Common Installers\*" "D:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "Z:\DV HF\13.3.1\*" "D:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Cleaning up clients, please wait...
+echo.
+echo Cleaning up Application Station 1.
+echo.
+rmdir /s /q "H:\PatchesUnderTest\Windows Server 2016"
+rmdir /s /q "H:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "H:\PatchesUnderTest\Common Installers"
+rmdir /s /q "H:\PatchesUnderTest\DV HF"
+echo.
+echo Cleaning up Application Station 2.
+echo.
+rmdir /s /q "I:\PatchesUnderTest\Windows Server 2016"
+rmdir /s /q "I:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "I:\PatchesUnderTest\Common Installers"
+rmdir /s /q "I:\PatchesUnderTest\DV HF"
+echo.
+echo Cleaning up Operator Station 1.
+echo.
+rmdir /s /q "J:\PatchesUnderTest\Windows Server 2016"
+rmdir /s /q "J:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "J:\PatchesUnderTest\Common Installers"
+rmdir /s /q "J:\PatchesUnderTest\DV HF"
+echo.
+echo Cleaning up Professional Station 1.
+echo.
+rmdir /s /q "K:\PatchesUnderTest\Windows 10"
+rmdir /s /q "K:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "K:\PatchesUnderTest\Common Installers"
+rmdir /s /q "K:\PatchesUnderTest\DV HF"
+echo.
+echo Cleaning up Remote Operator Station 1.
+echo.
+rmdir /s /q "L:\PatchesUnderTest\Windows 10"
+rmdir /s /q "L:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "L:\PatchesUnderTest\Common Installers"
+rmdir /s /q "L:\PatchesUnderTest\DV HF"
+echo.
+echo Cleaning up IDDC.
+echo.
+rmdir /s /q "M:\PatchesUnderTest\Windows 10"
+rmdir /s /q "M:\PatchesUnderTest\64-bit Installers"
+rmdir /s /q "M:\PatchesUnderTest\Common Installers"
+rmdir /s /q "M:\PatchesUnderTest\DV HF"
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Distributing files, please wait...
+
+echo.
+echo Copying to Application Station 1.
+echo.
+xcopy "D:\PatchesUnderTest\Windows Server 2016\*" "H:\PatchesUnderTest\Windows Server 2016\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "H:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "H:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "H:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+echo.
+echo Copying to Application Station 2.
+echo.
+xcopy "D:\PatchesUnderTest\Windows Server 2016\*" "I:\PatchesUnderTest\Windows Server 2016\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "I:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "I:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "I:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+echo.
+echo Copying to Operator Station 1.
+echo.
+xcopy "D:\PatchesUnderTest\Windows Server 2016\*" "J:\PatchesUnderTest\Windows Server 2016\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "J:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "J:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "J:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+echo.
+echo Copying to Professional Station 1.
+echo.
+xcopy "D:\PatchesUnderTest\Windows 10\*" "K:\PatchesUnderTest\Windows 10\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "K:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "K:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "K:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+echo.
+echo Copying to Remote Operator Station 1.
+echo.
+xcopy "D:\PatchesUnderTest\Windows 10\*" "L:\PatchesUnderTest\Windows 10\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "L:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "L:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "L:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+echo.
+echo Copying to IDDC.
+echo.
+xcopy "D:\PatchesUnderTest\Windows 10\*" "M:\PatchesUnderTest\Windows 10\*" /s /e /q
+xcopy "D:\PatchesUnderTest\64-bit Installers\*" "M:\PatchesUnderTest\64-bit Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\Common Installers\*" "M:\PatchesUnderTest\Common Installers\*" /s /e /q /y
+xcopy "D:\PatchesUnderTest\DV HF\13.3.1\*" "M:\PatchesUnderTest\DV HF\13.3.1\*" /s /e /q /y
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Disconnecting shared drives, please wait...
+net use H: /delete
+net use I: /delete
+net use J: /delete
+net use K: /delete
+net use L: /delete
+net use M: /delete
+net use Z: /delete
+
+echo.
+echo -------Done!-------
+echo.
+
+echo Press any key to exit
+
+pause > nul
+
+cls
+
+exit
