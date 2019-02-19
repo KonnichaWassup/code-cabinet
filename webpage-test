@@ -1,5 +1,6 @@
 package automationFramework;
 
+//import libraries
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,12 +10,10 @@ public class FirstTestCase {
 
 	public static void main(String[] args) {
 
-	System.setProperty("webdriver.chrome.driver", "d:\\chromedriver\\chromedriver.exe");
+	System.setProperty("webdriver.chrome.driver", "d:\\chromedriver\\chromedriver.exe"); //set Chrome WebDriver
 	WebDriver driver = new ChromeDriver();
 		
-	String baseUrl = "http://dhmstark.co.uk/rpgs/encounter-calculator-5th/";
-	//String tagName = "";
-
+	String baseUrl = "http://dhmstark.co.uk/rpgs/encounter-calculator-5th/"; //webpage under test
 	
 	driver.get(baseUrl); //load webpage
 	
