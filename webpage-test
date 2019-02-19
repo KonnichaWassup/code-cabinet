@@ -1,0 +1,59 @@
+package automationFramework;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
+
+public class FirstTestCase {
+
+	public static void main(String[] args) {
+
+	System.setProperty("webdriver.chrome.driver", "d:\\chromedriver\\chromedriver.exe");
+	WebDriver driver = new ChromeDriver();
+		
+	String baseUrl = "http://dhmstark.co.uk/rpgs/encounter-calculator-5th/";
+	//String tagName = "";
+
+	
+	driver.get(baseUrl); //load webpage
+	
+	//declare inputs
+	String chartype1 = "1"; 
+	String chartype2 = "4";
+	String chartype3 = "1";
+	
+	driver.findElement(By.xpath("//*[@id=\"charactersnumber1\"]")).sendKeys(chartype1); //input charType1 to character input field
+	driver.findElement(By.xpath("//*[@id=\"characterslevel1\"]")).sendKeys(chartype2); //input charType2 to character level input field
+	
+	WebElement crCheckbox = driver.findElement(By.name("useCR")); //find CR checkbox
+	
+	crCheckbox.click(); //click checkbox
+	
+	driver.findElement(By.xpath("//*[@id=\"monstersnumber1\"]")).sendKeys(chartype1); //input charType1 to monster input field
+	driver.findElement(By.xpath("//*[@id=\"monsterslevel1\"]")).sendKeys(chartype3); //input charType3 to monster CR input field
+	
+	WebElement monsterCalculate = driver.findElement(By.xpath("//*[@id=\"monstersContainer\"]/div[2]/div[4]/button")); //find Calculate button
+	
+	monsterCalculate.click(); //click Calculate button
+	
+	String expectedDifficulty = "Deadly";//declare expected Difficulty result
+	
+	String actualDifficulty = driver.findElement(By.xpath("//*[@id=\"comparison\"]/p")).getText(); //search for Difficulty web element and convert to string
+	
+	System.out.println(actualDifficulty);//print Difficulty result
+
+	
+	//compare the values of actualDifficulty vs. expectedDifficulty
+	if (actualDifficulty.contentEquals(expectedDifficulty)) {
+		System.out.println("Test Passed!");
+	} else {
+		System.out.println("Test Failed!");
+	}
+		
+	driver.close();
+	}
+
+}
+
+
