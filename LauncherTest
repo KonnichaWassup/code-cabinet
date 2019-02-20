@@ -1,0 +1,44 @@
+package LauncherTest;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class LauncherTest {
+	public void launchExe(String path) throws IOException {
+		
+		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+path);
+	}
+
+public static void main(String[] args) throws IOException {
+
+	LauncherTest launch = new LauncherTest();
+	launch.launchExe("C:\\Program Files\\Git\\git-bash.exe");
+	System.out.println("git-bash launched!");
+		
+	String line;
+	String pidInfo = "";
+	
+	Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+	
+	BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	
+	while ((line = input.readLine()) != null) {
+		
+		
+		pidInfo+=line;
+		
+	}
+	
+	if(pidInfo.contains("bash")) {
+	
+		System.out.println("Application is running!");
+		
+		} else {
+			
+		System.out.println("Application is NOT running");		
+	
+	}
+
+}
+}
