@@ -3,6 +3,7 @@ package LauncherTest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class LauncherTest {
 	public void launchExe(String path) throws IOException {
@@ -11,34 +12,47 @@ public class LauncherTest {
 	}
 
 public static void main(String[] args) throws IOException {
+		
+	ArrayList<String> exeList = new ArrayList<String>();
+	
+	exeList.add("git-cmd.exe");
+	exeList.add("git-bash.exe");
+	
+	
 
-	LauncherTest launch = new LauncherTest();
-	launch.launchExe("C:\\Program Files\\Git\\git-bash.exe");
-	System.out.println("git-bash launched!");
-		
-	String line;
-	String pidInfo = "";
 	
-	Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
-	
-	BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-	
-	while ((line = input.readLine()) != null) {
+	for (int i = 0; i < exeList.size(); i++ ) {
+
+		LauncherTest launch = new LauncherTest();
+		launch.launchExe("C:\\Program Files\\Git\\"+exeList.get(i));
 		
 		
-		pidInfo+=line;
+		String line;
+		String pidInfo = "";
+
+
+		Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+		BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		
-	}
-	
-	if(pidInfo.contains("bash")) {
-	
-		System.out.println("Application is running!");
 		
-		} else {
+
+		while ((line = input.readLine()) != null) {
+		
+		
+			pidInfo+=line;
+		
+		}
+	
+			if(pidInfo.contains(exeList.get(i))) {
+		
+				System.out.println(exeList.get(i) + " is running!");
 			
-		System.out.println("Application is NOT running");		
-	
+				} else {
+				
+				System.out.println(exeList.get(i) + " is NOT running");
+		
+			}
+			
 	}
-
 }
 }
