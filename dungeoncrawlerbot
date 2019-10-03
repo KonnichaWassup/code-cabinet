@@ -1,0 +1,51 @@
+import os
+import discord
+
+from discord.ext import commands
+from dotenv import load_dotenv
+
+load_dotenv()
+token = os.getenv('DISCORD_TOKEN')
+
+client = discord.Client()
+
+bot = commands.Bot(command_prefix='!')
+
+@bot.command(name='bot')
+async def callbot(ctx):
+    response = "At your service!"
+    await ctx.send(response)
+
+#class
+@bot.command(name='classname')
+async def classname(ctx):
+    response = "Available classes:\nFighter\nMage\nCleric\nTo choose a class, type ```!p[ClassName]```"
+    await ctx.send(response)
+
+@bot.command(name='pFighter')
+async def pFighter(ctx):
+    user = ctx.message.author
+    role = discord.utils.get(user.guild.roles, name="Fighter")
+    await user.add_roles(role)
+
+@bot.command(name='pCleric')
+async def pCleric(ctx):
+    user = ctx.message.author
+    role = discord.utils.get(user.guild.roles, name="Cleric")
+    await user.add_roles(role)
+        
+    """elif message.content == 'raise-exception':
+        raise discord.DiscordException"""
+
+@bot.command(name='retire')
+async def retire(ctx):
+    user = ctx.message.author
+    role = discord.utils.get(user.guild.roles, name="Fighter")
+    await user.remove_roles(role, reason=None, atomic=True)
+     
+    
+        
+
+
+bot.run(token)
+
